@@ -63,7 +63,6 @@ void one_ring_awp() {
   chassis.pid_wait_until(0.5 * tile);
   intake.move(0);
   chassis.pid_wait();
-
 }
 
 // Autonomous Test Run
