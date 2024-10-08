@@ -49,26 +49,6 @@ void top_two_rings_awp() {
 
   chassis.pid_turn_set(90, TURN_SPEED);
   chassis.pid_wait();
-
-  // Turn Right to 2 Ring Stack
-  chassis.pid_turn_set(90, TURN_SPEED);
-  chassis.pid_wait();
-  // Knock other color forward
-  chassis.pid_drive_set(1.2 * tile, DRIVE_SPEED, true);
-  chassis.pid_wait_until(12);
-  intake.move(0);
-  chassis.pid_wait();
-  // Go back, then pickup Blue
-  chassis.pid_drive_set(-0.4 * tile, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  intake.move(127);
-  chassis.pid_drive_set(0.3 * tile, DRIVE_SPEED);
-  chassis.pid_wait();
-  // Reverse a bit, turn off Intake, continue reverse into ladder
-  chassis.pid_drive_set(-2.1 * tile, DRIVE_SPEED, true);
-  chassis.pid_wait_until(0.5 * tile);
-  intake.move(0);
-  chassis.pid_wait();
 }
 
 // Autonomous Test Run
