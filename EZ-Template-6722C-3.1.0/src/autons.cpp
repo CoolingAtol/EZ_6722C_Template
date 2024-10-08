@@ -37,13 +37,19 @@ void default_constants() {
 // . . .
 
 // 1 Ring Auton and AWP
-void one_ring_awp() {
+void top_two_rings_awp() {
   // Pick up MoGo
   chassis.pid_drive_set(-15, DRIVE_SPEED, true);
   chassis.pid_wait();
   mogo_piston.set_value(true);
-  intake.move(127);
+  chassis.pid_drive_set(-2, 80);
+  chassis.pid_wait();
   chassis.pid_drive_set(2, 80);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90, TURN_SPEED);
+  chassis.pid_wait();
+
   // Turn Right to 2 Ring Stack
   chassis.pid_turn_set(90, TURN_SPEED);
   chassis.pid_wait();

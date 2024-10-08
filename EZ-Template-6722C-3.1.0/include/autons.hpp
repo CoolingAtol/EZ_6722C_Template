@@ -3,7 +3,7 @@
 #include "EZ-Template/drive/drive.hpp"
 
 extern Drive chassis;
-void one_ring_awp();
+void top_two_rings_awp();
 void drive_example();
 void turn_example();
 void drive_and_turn();
