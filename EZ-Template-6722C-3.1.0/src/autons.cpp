@@ -48,20 +48,26 @@ void top_two_rings_awp() {
   chassis.pid_wait();
   chassis.pid_drive_set(2, 0.5 * D);
   chassis.pid_wait();
+  pros::delay(100);
+
   // Turn Right toward Ring Stack
   chassis.pid_turn_set(90, T);
   chassis.pid_wait();
+
   // Activate Intake, drive to Ring Stack
   intake.move(INTAKE_SPEED);
   chassis.pid_drive_set(tile, D, true);
   chassis.pid_wait_until(0.5 * tile);
   intake.move(0);
   chassis.pid_wait();
+  pros::delay(100);
+  
   // Intakes Ring, drives Back
   intake.move(INTAKE_SPEED);
   chassis.pid_drive_set(-tile, D, true);
   chassis.pid_wait();
-  
+  intake.move(0);
+
 }
 
 // Autonomous Test Run
