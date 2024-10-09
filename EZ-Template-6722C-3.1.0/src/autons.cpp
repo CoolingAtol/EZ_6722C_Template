@@ -7,10 +7,12 @@ int tile = 24;
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-// These are out of 127
-const int DRIVE_SPEED = 100;
-const int TURN_SPEED = 80;
-const int SWING_SPEED = 80;
+// Drive, Turn, Swing Speeds; these are out of 127
+const int D = 100;
+const int T = 80;
+const int S = 80;
+
+const int INTAKE_SPEED = 64;
 
 ///
 // Constants
@@ -36,30 +38,41 @@ void default_constants() {
 // Make your own autonomous functions here!
 // . . .
 
-// 1 Ring Auton and AWP
+// 2 Ring Auton and AWP
 void top_two_rings_awp() {
   // Pick up MoGo
-  chassis.pid_drive_set(-15, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-15, D, true);
   chassis.pid_wait();
   mogo_piston.set_value(true);
-  chassis.pid_drive_set(-2, 80);
+  chassis.pid_drive_set(-2, 0.5 * D);
   chassis.pid_wait();
-  chassis.pid_drive_set(2, 80);
+  chassis.pid_drive_set(2, 0.5 * D);
   chassis.pid_wait();
-
-  chassis.pid_turn_set(90, TURN_SPEED);
+  // Turn Right toward Ring Stack
+  chassis.pid_turn_set(90, T);
   chassis.pid_wait();
+  // Activate Intake, drive to Ring Stack
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(tile, D, true);
+  chassis.pid_wait_until(0.5 * tile);
+  intake.move(0);
+  chassis.pid_wait();
+  // Intakes Ring, drives Back
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(-tile, D, true);
+  chassis.pid_wait();
+  
 }
 
 // Autonomous Test Run
 void test_auton() {
-  chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(48_in, D, true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_turn_set(90_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(48_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(48_in, D, true);
   chassis.pid_wait();
 }
 
@@ -72,13 +85,13 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(24_in, D, true);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-12_in, D);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-12_in, D);
   chassis.pid_wait();
 }
 
@@ -89,13 +102,13 @@ void turn_example() {
   // The first parameter is the target in degrees
   // The second parameter is max speed the robot will drive at
 
-  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_turn_set(90_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_turn_set(0_deg, T);
   chassis.pid_wait();
 }
 
@@ -103,19 +116,19 @@ void turn_example() {
 // Combining Turn + Drive
 ///
 void drive_and_turn() {
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(24_in, D, true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_turn_set(-45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_turn_set(0_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-24_in, D, true);
   chassis.pid_wait();
 }
 
@@ -128,22 +141,22 @@ void wait_until_change_speed() {
   // When the robot gets to 6 inches slowly, the robot will travel the remaining distance at full speed
   chassis.pid_drive_set(24_in, 30, true);
   chassis.pid_wait_until(6_in);
-  chassis.pid_speed_max_set(DRIVE_SPEED);  // After driving 6 inches at 30 speed, the robot will go the remaining distance at DRIVE_SPEED
+  chassis.pid_speed_max_set(D);  // After driving 6 inches at 30 speed, the robot will go the remaining distance at D
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_turn_set(-45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_turn_set(0_deg, T);
   chassis.pid_wait();
 
   // When the robot gets to -6 inches slowly, the robot will travel the remaining distance at full speed
   chassis.pid_drive_set(-24_in, 30, true);
   chassis.pid_wait_until(-6_in);
-  chassis.pid_speed_max_set(DRIVE_SPEED);  // After driving 6 inches at 30 speed, the robot will go the remaining distance at DRIVE_SPEED
+  chassis.pid_speed_max_set(D);  // After driving 6 inches at 30 speed, the robot will go the remaining distance at D
   chassis.pid_wait();
 }
 
@@ -156,16 +169,16 @@ void swing_example() {
   // The third parameter is the speed of the moving side of the drive
   // The fourth parameter is the speed of the still side of the drive, this allows for wider arcs
 
-  chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, SWING_SPEED, 45);
+  chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, S, 45);
   chassis.pid_wait();
 
-  chassis.pid_swing_set(ez::RIGHT_SWING, 0_deg, SWING_SPEED, 45);
+  chassis.pid_swing_set(ez::RIGHT_SWING, 0_deg, S, 45);
   chassis.pid_wait();
 
-  chassis.pid_swing_set(ez::RIGHT_SWING, 45_deg, SWING_SPEED, 45);
+  chassis.pid_swing_set(ez::RIGHT_SWING, 45_deg, S, 45);
   chassis.pid_wait();
 
-  chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, SWING_SPEED, 45);
+  chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, S, 45);
   chassis.pid_wait();
 }
 
@@ -176,20 +189,20 @@ void motion_chaining() {
   // Motion chaining is where motions all try to blend together instead of individual movements.
   // This works by exiting while the robot is still moving a little bit.
   // To use this, replace pid_wait with pid_wait_quick_chain.
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(24_in, D, true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(45_deg, T);
   chassis.pid_wait_quick_chain();
 
-  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_turn_set(-45_deg, T);
   chassis.pid_wait_quick_chain();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_turn_set(0_deg, T);
   chassis.pid_wait();
 
   // Your final motion should still be a normal pid_wait
-  chassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-24_in, D, true);
   chassis.pid_wait();
 }
 
@@ -197,19 +210,19 @@ void motion_chaining() {
 // Auto that tests everything
 ///
 void combining_movements() {
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(24_in, D, true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(45_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_swing_set(ez::RIGHT_SWING, -45_deg, SWING_SPEED, 45);
+  chassis.pid_swing_set(ez::RIGHT_SWING, -45_deg, S, 45);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_turn_set(0_deg, T);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-24_in, D, true);
   chassis.pid_wait();
 }
 
@@ -239,7 +252,7 @@ void tug(int attempts) {
 // If there is no interference, the robot will drive forward and turn 90 degrees.
 // If interfered, the robot will drive forward and then attempt to drive backward.
 void interfered_example() {
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(24_in, D, true);
   chassis.pid_wait();
 
   if (chassis.interfered) {
@@ -247,7 +260,7 @@ void interfered_example() {
     return;
   }
 
-  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_turn_set(90_deg, T);
   chassis.pid_wait();
 }
 
