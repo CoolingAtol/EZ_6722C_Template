@@ -41,7 +41,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      Auton("T 2 Rings, AWP", top_two_rings_awp),
+      Auton("Red, T 2 Rings, AWP", red_top_two_rings_awp),
+      Auton("Blue, T 2 Rings, AWP", blue_top_two_rings_awp),
       Auton("Autonomous Test", test_auton),
   });
 
@@ -143,11 +144,15 @@ void opcontrol() {
     // . . .
 
     // Intake Control Andrei
+    // 85 = ~400 RPM
+    // 106 = ~500 RPM
+    // 116 = ~550 RPM
+    // 127 = 600 RPM
     if (master.get_digital(DIGITAL_R1)) {
-      intake.move(127);
+      intake.move(106);
     }
     else if (master.get_digital(DIGITAL_L1)) {
-      intake.move(-127);
+      intake.move(-106);
     }
     else {
       intake.move(0);

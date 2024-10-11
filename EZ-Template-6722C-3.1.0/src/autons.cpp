@@ -38,9 +38,8 @@ void default_constants() {
 // Make your own autonomous functions here!
 // . . .
 
-// 2 Ring Auton and AWP
-void top_two_rings_awp() {
-  // Pick up MoGo
+// Red 5 Ring Auton and AWP
+void red_5_rings_awp() {
   chassis.pid_drive_set(-15, D, true);
   chassis.pid_wait();
   mogo_piston.set_value(true);
@@ -54,19 +53,138 @@ void top_two_rings_awp() {
   chassis.pid_turn_set(90, T);
   chassis.pid_wait();
 
+  // Activate Intake, Drive to Ring Stack
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(tile, D, true);
+  chassis.pid_wait_until(0.7 * tile);
+  intake.move(0);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  // Intake Ring from 1st Stack
+  intake.move(INTAKE_SPEED);
+  pros::delay(1000);
+  intake.move(0);
+  pros::delay(100);
+
+  // Turn to 2nd stack, Intake Ring
+  chassis.pid_turn_set(80, T);
+  chassis.pid_wait();
+  chassis.pid_drive_set(20.3, D);
+  chassis.pid_wait();
+  pros::delay(200);
+  intake.move(INTAKE_SPEED);
+  pros::delay(1000);
+
+  // Drive backwards
+  chassis.pid_drive_set(-20.3, D);
+  chassis.pid_wait();
+  intake.move(0);
+
+  // Turn to 3rd stack, Intake Ring
+  chassis.pid_turn_set(20, T);
+  chassis.pid_wait();
+  pros::delay(200);
+  intake.move(INTAKE_SPEED);
+  pros::delay(1000);
+
+  // Drive backwards
+  chassis.pid_drive_set(-20.3, D);
+  chassis.pid_wait();
+  intake.move(0);
+  pros::delay(100);
+
+  // Turn Right & Drive Forward
+  chassis.pid_turn_set(70, T);
+  chassis.pid_wait();
+  chassis.pid_drive_set(tile, D, true);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  // Turn Toward 4th Ring Stack
+  chassis.pid_turn_set(45, T);
+  chassis.pid_wait();
+  chassis.pid_drive_set(34, D);
+  chassis.pid_wait();
+  pros::delay(200);
+
+  // Intake 5th Ring
+  intake.move(INTAKE_SPEED);
+  pros::delay(1000);
+  intake.move(0);
+
+  // Turn and Drive Forward into Ladder
+  chassis.pid_turn_set(-45, T);
+  chassis.pid_wait();
+  chassis.pid_drive_set(0.7 * tile, D);
+}
+
+// Red 2 Ring Auton and AWP
+void red_top_two_rings_awp() {
+  // Pick up MoGo
+  chassis.pid_drive_set(-15, D, true);
+  chassis.pid_wait();
+  mogo_piston.set_value(true);
+  chassis.pid_drive_set(-2, 0.5 * D);
+  chassis.pid_wait();
+  chassis.pid_drive_set(2, 0.5 * D);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  // Turn Right toward Ring Stack
+  chassis.pid_turn_set(90, T);
+  chassis.pid_wait();
+  pros::delay(100);
+
   // Activate Intake, drive to Ring Stack
   intake.move(INTAKE_SPEED);
   chassis.pid_drive_set(tile, D, true);
-  chassis.pid_wait_until(0.5 * tile);
+  chassis.pid_wait_until(0.7 * tile);
   intake.move(0);
   chassis.pid_wait();
   pros::delay(100);
   
   // Intakes Ring, drives Back
   intake.move(INTAKE_SPEED);
-  chassis.pid_drive_set(-tile, D, true);
-  chassis.pid_wait();
+  chassis.pid_drive_set(-2 * tile, D, true);
+  chassis.pid_wait_until(-1.5 * tile);
   intake.move(0);
+  chassis.pid_wait();
+
+}
+
+// Blue 2 Ring Auton and AWP
+void blue_top_two_rings_awp() {
+  // Pick up MoGo
+  chassis.pid_drive_set(-15, D, true);
+  chassis.pid_wait();
+  mogo_piston.set_value(true);
+  chassis.pid_drive_set(-2, 0.5 * D);
+  chassis.pid_wait();
+  chassis.pid_drive_set(2, 0.5 * D);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  // Turn Right toward Ring Stack
+  chassis.pid_turn_set(-90, T);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  // Activate Intake, drive to Ring Stack
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(tile, D, true);
+  chassis.pid_wait_until(0.7 * tile);
+  intake.move(0);
+  chassis.pid_wait();
+  pros::delay(200);
+  
+  // Intakes Ring, drives Back
+  intake.move(INTAKE_SPEED);
+  pros::delay(200);
+  chassis.pid_drive_set(-2 * tile, D, true);
+  chassis.pid_wait_until(-1.5 * tile);
+  intake.move(0);
+  chassis.pid_wait();
 
 }
 
