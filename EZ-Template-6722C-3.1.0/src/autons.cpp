@@ -40,6 +40,7 @@ void default_constants() {
 
 // Red 5 Ring Auton and AWP
 void red_5_rings_awp() {
+  // Pick up MoGo
   chassis.pid_drive_set(-15, D, true);
   chassis.pid_wait();
   mogo_piston.set_value(true);
