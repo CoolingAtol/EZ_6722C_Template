@@ -112,9 +112,11 @@ void red_5_rings_awp() {
   pros::delay(200);
 
   // Intake 5th Ring
+  /**
   intake.move(INTAKE_SPEED);
   pros::delay(1000);
   intake.move(0);
+  */
 
   // Turn and Drive Forward into Ladder
   chassis.pid_turn_set(-45, T);
@@ -196,10 +198,12 @@ void blue_5_rings_awp() {
   pros::delay(200);
 
   // Intake 5th Ring
+  /**
   intake.move(INTAKE_SPEED);
   pros::delay(1000);
   intake.move(0);
-
+  */
+ 
   // Turn and Drive Forward into Ladder
   chassis.pid_turn_set(45, T);
   chassis.pid_wait();
