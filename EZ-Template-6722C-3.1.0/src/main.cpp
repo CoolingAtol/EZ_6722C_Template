@@ -29,7 +29,7 @@ void initialize() {
 
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(true);  // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(1);    // Sets the active brake kP. We recommend ~2.  0 will disable.
+  chassis.opcontrol_drive_activebrake_set(0);    // Sets the active brake kP. We recommend ~2.  0 will disable.
   chassis.opcontrol_curve_default_set(0, 0);     // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
   // Set the drive to your own constants from autons.cpp!
@@ -151,7 +151,7 @@ void opcontrol() {
     if (master.get_digital(DIGITAL_R1)) {
       intake.move(106);
     }
-    else if (master.get_digital(DIGITAL_L1)) {
+    else if (master.get_digital(DIGITAL_R2)) {
       intake.move(-106);
     }
     else {
@@ -161,7 +161,7 @@ void opcontrol() {
     static bool mogo_active = false;
 
     // Sets MoGo Piston Button Toggle to 'A' Button
-    if(master.get_digital_new_press(DIGITAL_A)){
+    if(master.get_digital_new_press(DIGITAL_L1)){
       mogo_active = !mogo_active;
       mogo_piston.set_value(mogo_active);
    

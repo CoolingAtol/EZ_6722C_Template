@@ -12,7 +12,11 @@ const int D = 100;
 const int T = 80;
 const int S = 80;
 
-const int INTAKE_SPEED = 64;
+// 85 = ~400 RPM
+// 106 = ~500 RPM
+// 116 = ~550 RPM
+// 127 = 600 RPM
+const int INTAKE_SPEED = 85;
 
 ///
 // Constants
@@ -100,10 +104,14 @@ void red_5_rings_awp() {
   // Turn Right & Drive Forward
   chassis.pid_turn_set(70, T);
   chassis.pid_wait();
-  chassis.pid_drive_set(tile, D, true);
+  chassis.pid_drive_set(tile, D);
   chassis.pid_wait();
   pros::delay(100);
+  
+  // For now drive straight to ladder
+  chassis.pid_drive_set(tile, D);
 
+  /**
   // Turn Toward 4th Ring Stack
   chassis.pid_turn_set(45, T);
   chassis.pid_wait();
@@ -112,16 +120,16 @@ void red_5_rings_awp() {
   pros::delay(200);
 
   // Intake 5th Ring
-  /**
   intake.move(INTAKE_SPEED);
   pros::delay(1000);
   intake.move(0);
-  */
+
 
   // Turn and Drive Forward into Ladder
   chassis.pid_turn_set(-45, T);
   chassis.pid_wait();
   chassis.pid_drive_set(0.7 * tile, D);
+  */
 }
 
 // Blue 5 Ring Auton and AWP
@@ -190,6 +198,10 @@ void blue_5_rings_awp() {
   chassis.pid_wait();
   pros::delay(100);
 
+  // For now drive straight to ladder
+  chassis.pid_drive_set(tile, D);
+
+  /**
   // Turn Toward 4th Ring Stack
   chassis.pid_turn_set(-45, T);
   chassis.pid_wait();
@@ -198,16 +210,15 @@ void blue_5_rings_awp() {
   pros::delay(200);
 
   // Intake 5th Ring
-  /**
   intake.move(INTAKE_SPEED);
   pros::delay(1000);
   intake.move(0);
-  */
  
   // Turn and Drive Forward into Ladder
   chassis.pid_turn_set(45, T);
   chassis.pid_wait();
   chassis.pid_drive_set(0.7 * tile, D);
+  */
 }
 
 // Red 2 Ring Auton and AWP
