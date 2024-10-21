@@ -41,6 +41,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      Auton("Red, T 4 Rings, AWP", red_top_four_rings_awp),
+      Auton("Red, T 4 Rings, AWP", blue_top_four_rings_awp),
       Auton("Red, T 2 Rings, AWP", red_top_two_rings_awp),
       Auton("Blue, T 2 Rings, AWP", blue_top_two_rings_awp),
       Auton("Autonomous Test", test_auton),

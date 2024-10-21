@@ -3,6 +3,8 @@
 #include "EZ-Template/drive/drive.hpp"
 
 extern Drive chassis;
+void blue_top_four_rings_awp();
+void red_top_four_rings_awp();
 void blue_top_two_rings_awp();
 void red_top_two_rings_awp();
 void drive_example();

@@ -42,8 +42,8 @@ void default_constants() {
 // Make your own autonomous functions here!
 // . . .
 
-// Red 5 Ring Auton and AWP
-void red_5_rings_awp() {
+// Red 4 Ring Auton and AWP
+void red_top_four_rings_awp() {
   // Pick up MoGo
   chassis.pid_drive_set(-15, D, true);
   chassis.pid_wait();
@@ -111,7 +111,7 @@ void red_5_rings_awp() {
   // For now drive straight to ladder
   chassis.pid_drive_set(tile, D);
 
-  /**
+  /** For 5 Ring AWP
   // Turn Toward 4th Ring Stack
   chassis.pid_turn_set(45, T);
   chassis.pid_wait();
@@ -132,8 +132,8 @@ void red_5_rings_awp() {
   */
 }
 
-// Blue 5 Ring Auton and AWP
-void blue_5_rings_awp() {
+// Blue 4 Ring Auton and AWP
+void blue_top_four_rings_awp() {
   // Pick up MoGo
   chassis.pid_drive_set(-15, D, true);
   chassis.pid_wait();
@@ -201,7 +201,7 @@ void blue_5_rings_awp() {
   // For now drive straight to ladder
   chassis.pid_drive_set(tile, D);
 
-  /**
+  /** For 5 Ring AWP
   // Turn Toward 4th Ring Stack
   chassis.pid_turn_set(-45, T);
   chassis.pid_wait();
