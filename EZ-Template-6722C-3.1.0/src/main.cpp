@@ -151,10 +151,10 @@ void opcontrol() {
     // 116 = ~550 RPM
     // 127 = 600 RPM
     if (master.get_digital(DIGITAL_R1)) {
-      intake.move(106);
+      intake.move(-106);
     }
     else if (master.get_digital(DIGITAL_R2)) {
-      intake.move(-106);
+      intake.move(106);
     }
     else {
       intake.move(0);
